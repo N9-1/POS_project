@@ -9,16 +9,22 @@ def stockManagement():
 
 class StockManagement(customtkinter.CTkToplevel):
 
-    def __init__(self):
-        super().__init__()
+    WIDTH = 1280
+    HEIGHT = 720
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.title("Stock Management")
-        self.geometry("1280x720")
+        self.geometry(f"{StockManagement.WIDTH}x{StockManagement.HEIGHT}")
 
+        # ============ make resizable = Fasle ============
+        self.minsize(StockManagement.WIDTH, StockManagement.HEIGHT)
+        self.maxsize(StockManagement.WIDTH, StockManagement.HEIGHT)
+
+        self.attributes('-topmost', 'true') # always on top
+        self.grab_set() # ensure that users can only interact with dialog
+        
         # ============ Exit ============
         self.bind("<Escape>", lambda q: self.destroy())
-
-        # self.mainloop()
-
-# if __name__ == "__main__":
-#     stockManagement()
+        

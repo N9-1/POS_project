@@ -11,12 +11,16 @@ def mainWindow():
 class MainWindow(customtkinter.CTk):
 
     customtkinter.set_appearance_mode("dark")
+    WIDTH = 1280
+    HEIGHT = 720
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
         self.title("Main")
-        self.geometry('1280x720')
+        self.geometry(f"{MainWindow.WIDTH}x{MainWindow.HEIGHT}")
+        self.resizable(False, False)
+
         self.button = customtkinter.CTkButton(self, text="Create Toplevel", command=self.create_toplevel)
         self.button.pack(side="top", padx=40, pady=40)
         
@@ -24,7 +28,7 @@ class MainWindow(customtkinter.CTk):
         self.bind("<Escape>", self.confirmExit)
         self.protocol("WM_DELETE_WINDOW", self.confirmExit)
 
-        self.resizable(False, False)
+        
         self.mainloop()
 
     def create_toplevel(self):

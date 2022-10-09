@@ -116,7 +116,7 @@ class MainWindow(customtkinter.CTk):
             self.product_canvas.config(scrollregion=(0,0,0,self.product_canvas_height))
         else:
             self.product_canvas.config(scrollregion=(0,0,0,self.product_frame.winfo_width()+10))
-        # print(abs((self.product_button_height*self.product_row)-self.product_frame.winfo_width()+105)+self.product_frame.winfo_width())
+        
         # ============ Cart ============
 
         # main frame
@@ -210,7 +210,6 @@ class MainWindow(customtkinter.CTk):
         self.cart_canvas.create_window((0, 0), window=self.frame_buttons, anchor='nw')
 
         # cart button
-        self.cart_dict = {"Product":"tea", "Price":"100", "Total_Price":"120", "item":"1", "sw":"normal", "top":"None"}
         self.cart_button_width = 30
         for i in range(self.all_items):
             # label
@@ -261,7 +260,7 @@ class MainWindow(customtkinter.CTk):
 
         self.cart_canvas_height = abs((self.cart_button_width*self.all_items)-440)+self.cart_sub_frame.winfo_width()
         
-        self.update_idletasks() # ty stackoverflow ;-;
+        self.update_idletasks() 
         if self.frame_buttons.winfo_height()+5 < self.cart_sub_frame.winfo_width(): # +pady
             self.cart_canvas.config(scrollregion=(0,0,0,365)) # 2 items
         else:

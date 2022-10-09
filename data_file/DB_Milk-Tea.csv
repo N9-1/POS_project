@@ -1,81 +1,21 @@
-ID,Product_Name,Price
-1,Taiwan Milk Tea,30
-2,Taiwan Milk Tea + Black Bubble,35
-3,Taiwan Milk Tea + Golden Bubble,35
-4,Taiwan Milk Tea + Brown Sugar Konjac,40
-5,Taiwan Green Milk Tea,30
-6,Taiwan Green Milk Tea + Black Bubble,35
-7,Taiwan Green Milk Tea + Golden Bubble,35
-8,Taiwan Green Milk Tea + Brown Sugar Konjac,40
-9,Strawberry Milk Tea,30
-10,Strawberry Milk Tea + Black Bubble,35
-11,Strawberry Milk Tea + Golden Bubble,35
-12,Strawberry Milk Tea + Brown Sugar Konjac,40
-13,Taro Milk Tea,30
-14,Taro Milk Tea + Black Bubble,35
-15,Taro Milk Tea + Golden Bubble,35
-16,Taro Milk Tea + Brown Sugar Konjac,40
-17,Tea,25
-18,Tea + Black Bubble,30
-19,Tea + Golden Bubble,30
-20,Tea + Brown Sugar Konjac,35
-21,Strawberry Tea,30
-22,Strawberry Tea + Black Bubble,35
-23,Strawberry Tea + Golden Bubble,35
-24,Strawberry Tea + Brown Sugar Konjac,40
-25,Lemon Tea,30
-26,Lemon Tea + Black Bubble,35
-27,Lemon Tea + Golden Bubble,35
-28,Lemon Tea + Brown Sugar Konjac,40
-29,Lychee Tea ,30
-30,Lychee Tea + Black Bubble,35
-31,Lychee Tea + Golden Bubble,35
-32,Lychee Tea + Brown Sugar Konjac,40
-33,Honey Lemon ,45
-34,Honey Lemon + Black Bubble,50
-35,Honey Lemon + Golden Bubble,50
-36,Honey Lemon + Brown Sugar Konjac,55
-37,Lemon Mint,40
-38,Lemon Mint + Black Bubble,45
-39,Lemon Mint + Golden Bubble,45
-40,Lemon Mint + Brown Sugar Konjac,50
-41,Strawberry Lemon ,40
-42,Strawberry Lemon + Black Bubble,45
-43,Strawberry Lemon + Golden Bubble,45
-44,Strawberry Lemon + Brown Sugar Konjac,50
-45,Blue Lemon ,40
-46,Blue Lemon + Black Bubble,45
-47,Blue Lemon + Golden Bubble,45
-48,Blue Lemon + Brown Sugar Konjac,50
-49,Matcha Milk Frappe,55
-50,Matcha Milk Frappe + Black Bubble,60
-51,Matcha Milk Frappe + Golden Bubble,60
-52,Matcha MIlk Frappe + Brown Sugar Konjac,65
-53,Milk Frappe cocoa Lava ,55
-54,Milk Frappe cocoa Lava + Black Bubble,60
-55,Milk Frappe cocoa Lava + Golden Bubble,60
-56,Milk Frappe cocoa Lava + Brown Sugar Konjac,65
-57,Strawberry Yogurt Frappe,55
-58,Strawberry Yogurt Frappe + Black Bubble,60
-59,Strawberry Yogurt Frappe + Golden Bubble,60
-60,Strawberry Yogurt Frappe + Brown Sugar Konjac,65
-61,Cocoa Frappe ,50
-62,Cocoa Frappe + Black Bubble,55
-63,Cocoa Frappe + Golden Bubble,55
-64,Cocoa Frappe + Brown sugar Konjac,60
-65,Matcha Latte,50
-66,Matcha Latte + Black Bubble,55
-67,Matcha Latte + Golden Bubble,55
-68,Matcha Latte + Brown Sugar Konjac,60
-69,Brown Sugar Milk,45
-70,Brown Sugar Milk + Black Bubble,50
-71,Brown Sugar Milk + Golden Bubble,50
-72,Brown Sugar Milk + Brown Sugar Konjac,55
-73,Cocoa,45
-74,Cocoa + Black Bubble,50
-75,Cocoa + Golden Bubble,50
-76,Cocoa + Brown Sugar Konjac,55
-77,Cocoa Mint,45
-78,Cocoa Mint + Black Bubble,50
-79,Cocoa MInt + Golden Bubble,50
-80,Cocoa Mint + Brown Sugar Konjac,55
+ID,Product_Name,Price,Discount
+1,Taiwan Milk Tea,30,10
+2,Taiwan Green Milk Tea,30,10
+3,Strawberry Milk Tea,30,0
+4,Taro Milk Tea,30,0
+5,Tea,25,0
+6,Strawberry Tea,30,0
+7,Lemon Tea,30,0
+8,Lychee Tea ,30,0
+9,Honey Lemon ,45,0
+10,Lemon Mint,40,0
+11,Strawberry Lemon,40,0
+12,Blue Lemon,40,0
+13,Matcha Milk Frappe,55,0
+14,Milk Frappe cocoa Lava,55,0
+15,Strawberry Yogurt Frappe,55,0
+16,Cocoa Frappe,50,0
+17,Matcha Latte,50,0
+18,Brown Sugar Milk,45,0
+19,Cocoa,45,0
+20,Cocoa Mint,45,0

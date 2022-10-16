@@ -1,4 +1,5 @@
 import csv
+import os
 from tkinter import messagebox
 
 # ============ csv ============
@@ -12,6 +13,15 @@ def get_data_pd():
         del(data_pd[0]) # delete header
         return data_pd
     except FileNotFoundError:
+        directory = 'data_file'
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            
+        header = [['ID','Product_Name','Price','Discount']]
+        with open('.\data_file\DB_Milk-Tea.csv', 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerows(header)
         data_pd = []
         return data_pd
 
@@ -25,10 +35,31 @@ def get_data_cart():
         del(data_cart[0]) # delete header
         return data_cart
     except FileNotFoundError:
+        directory = 'data_file'
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            
+        header = [['ID','Product_Name','Price','Discount','Item','Size','Topping','SweetnessLv','Total_Price']]
+        with open('.\data_file\cart_record.csv', 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerows(header)
         data_cart = []
         return data_cart
 
 def write_data_cart(*argv):
+    # print(*argv)
     with open('.\data_file\cart_record.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(*argv)
+
+def clear_data_cart():
+    # open file
+    filepath_cart = '.\data_file\cart_record.csv'
+    file_cart = open(filepath_cart)
+    reader_cart = csv.reader(file_cart)
+    data_cart = list(reader_cart)
+    with open('.\data_file\cart_record.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(data_cart[0])
+    

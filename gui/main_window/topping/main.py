@@ -1,9 +1,8 @@
 import tkinter as tk
 from tkinter import messagebox
-from turtle import pd
 import customtkinter
-import csv
 from controller import write_data_cart
+
 
 def topping(name):
     global pd
@@ -18,7 +17,6 @@ class Topping(customtkinter.CTkToplevel):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         self.title(f"{pd[1]}")
         self.geometry(f"{Topping.WIDTH}x{Topping.HEIGHT}")
 
@@ -197,5 +195,5 @@ class Topping(customtkinter.CTkToplevel):
     def save(self):
         self.lst_rec[8] = self.total_price()
         write_data_cart(self.lst_rec)
+        # main.refreshMain()
         self.cancel()
-        # print(self.lst_rec)

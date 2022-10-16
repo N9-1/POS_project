@@ -1,19 +1,217 @@
 import tkinter as tk
 from tkinter import messagebox
 from math import ceil
-import csv
 import customtkinter
 from .stock_management.main import stockManagement
 from .history.main import history
-from .topping.main import topping
-from controller import get_data_pd, get_data_cart
+# from .topping.main import topping
+from controller import get_data_pd, get_data_cart, write_data_cart, clear_data_cart
+
 
 def mainWindow():
     MainWindow()
 
-# ============ get csv ============
-data_pd = get_data_pd()
-data_cart = get_data_cart()
+
+def topping(name): # set product for topping 
+    global pd
+    pd = name
+
+
+def getCSV():
+    global data_pd, data_cart
+    # ============ get csv ============
+    data_pd = get_data_pd()
+    data_cart = get_data_cart()
+
+
+class Topping(customtkinter.CTkToplevel):
+
+    WIDTH = 720
+    HEIGHT = 500
+
+    def __init__(self, master, *args, **kwargs):
+        super().__init__(master, *args, **kwargs)
+        self.master = master
+        self.title(f"{pd[1]}")
+        self.geometry(f"{Topping.WIDTH}x{Topping.HEIGHT}")
+
+        # ============ make resizable = Fasle ============
+        self.minsize(Topping.WIDTH, Topping.HEIGHT)
+        self.maxsize(Topping.WIDTH, Topping.HEIGHT)
+
+        self.attributes('-topmost', 'true') # always on top
+        self.grab_set() # ensure that users can only interact with dialog
+        # ============ list for record ============
+        self.lst_rec = [] # get range 0-8
+        self.lst_rec.extend(pd) # add 0-3
+        self.lst_sample = [None] * 5 # add None range
+        self.lst_rec.extend(self.lst_sample)
+        # print(self.lst_rec)
+        # ============ label ============
+        self.label_tps = customtkinter.CTkLabel(master=self,
+                                              text="Select Topping",
+                                              text_font=("Roboto Medium", -18))
+        self.label_tps.grid(row=0, column=0, padx=20, pady=10, sticky="w")
+
+        # ============ Main frame ============
+        self.main_frame = customtkinter.CTkFrame(master=self, width=Topping.WIDTH-50, height=Topping.HEIGHT-118, corner_radius=10)
+        self.main_frame.grid(column=0, row=1, sticky="s", padx=20, pady=(0, 20))
+        self.main_frame.grid_propagate(False)
+        # ============ size ============
+        # label
+        self.lst_size = ["M","L"]
+        self.label_size = customtkinter.CTkLabel(master=self.main_frame,
+                                              text="Size",
+                                              text_font=("Roboto Medium", -16))
+        self.label_size.grid(row=0, column=0, padx=20, pady=10)
+        self.combobox_size = customtkinter.CTkOptionMenu(master=self.main_frame,
+                                       values=self.lst_size,
+                                       command=self.size_callback)
+        self.combobox_size.grid(row=1, column=0, padx=20, pady=(0,10))
+
+        # ============ topping ============
+        self.lst_topping = ["None","Boba", "Grass jelly", "Cheese foam", "Taro", "Fruity jelly", "Aiyu jelly"]
+        self.label_topping = customtkinter.CTkLabel(master=self.main_frame,
+                                              text="topping",
+                                              text_font=("Roboto Medium", -16))
+        self.label_topping.grid(row=2, column=0, padx=20, pady=10)
+        self.combobox_topping = customtkinter.CTkOptionMenu(master=self.main_frame,
+                                       values=self.lst_topping,
+                                       command=self.topping_callback)
+        self.combobox_topping.grid(row=3, column=0, padx=20, pady=(0,10))
+
+        # ============ sweetness level ============
+        self.lst_sweetnesslv = ["100%", "75%", "50%", "25%", "0%"]
+        self.label_sweetnesslv = customtkinter.CTkLabel(master=self.main_frame,
+                                              text="Sweetness Level",
+                                              text_font=("Roboto Medium", -16))
+        self.label_sweetnesslv.grid(row=4, column=0, padx=20, pady=10)
+        self.combobox_sweetnesslv = customtkinter.CTkOptionMenu(master=self.main_frame,
+                                       values=self.lst_sweetnesslv,
+                                       command=self.swlv_callback)
+        self.combobox_sweetnesslv.grid(row=5, column=0, padx=20, pady=(0,10))
+
+        # ============ list default ============
+        self.size_price = 0
+        self.topping_price = 0
+        self.lst_rec[5] = self.lst_size[0]
+        self.lst_rec[6] = self.lst_topping[0]
+        self.lst_rec[7] = self.lst_sweetnesslv[0]
+        self.lst_rec[8] = int(pd[2])-int(pd[3]) # total price (price-discount)
+        # ============ lower button ============
+        self.low_frame = customtkinter.CTkFrame(master=self, width=Topping.WIDTH-50, height=35, fg_color="#212325")
+        self.low_frame.grid(column=0, row=2, sticky="w", padx=20, pady=(0, 20))
+        self.low_frame.grid_propagate(False)
+        self.btn_decrease = customtkinter.CTkButton(self.low_frame,
+                                 width=30,
+                                 height=30,
+                                 text='-',
+                                 command=self.decrease,
+                                 corner_radius=5,
+                                 text_font=("Roboto Regular", -18))
+        self.btn_decrease.grid(row=0, column=0, padx=(0, 5), sticky="w")
+
+        self.data_itemcount = 1
+        self.lst_rec[4] = self.data_itemcount
+        # print(self.lst_rec)
+        self.var_itemcount = tk.StringVar(value=f'{self.data_itemcount}')
+        # .set()
+        self.label_itemcount = customtkinter.CTkLabel(master=self.low_frame,
+                                    textvariable=self.var_itemcount,
+                                    text_font=("Roboto Medium", -16))
+        self.label_itemcount.grid(row=0, column=1, sticky="w")
+
+        self.btn_increase = customtkinter.CTkButton(self.low_frame,
+                                 width=30,
+                                 height=30,
+                                 text='+',
+                                 command=self.increase,
+                                 corner_radius=5,
+                                 text_font=("Roboto Regular", -18))
+        self.btn_increase.grid(row=0, column=3, padx=(0,5), sticky="w")
+        self.var_price = tk.StringVar(value=f'price {self.lst_rec[8]} THB')
+        self.label_price = customtkinter.CTkLabel(master=self.low_frame,
+                                    textvariable=self.var_price,
+                                    text_font=("Roboto Medium", -16))
+        self.label_price.grid(row=0, column=4, sticky="w")
+
+        self.btn_cancel = customtkinter.CTkButton(self.low_frame,
+                                 width=100,
+                                 height=30,
+                                 text='Cancel',
+                                 command=self.cancel,
+                                 corner_radius=5,
+                                 fg_color="#a82222",
+                                 hover_color="#7f1a1a",
+                                 text_font=("Roboto Regular", -12))
+        self.btn_cancel.grid(row=0, column=5, padx=20, sticky="e")
+        self.btn_save = customtkinter.CTkButton(self.low_frame,
+                                 width=120,
+                                 height=30,
+                                 text='Save',
+                                 command=self.save,
+                                 corner_radius=5,
+                                 fg_color="#5aa822",
+                                 hover_color="#447f1a",
+                                 text_font=("Roboto Regular", -12))
+        self.btn_save.grid(row=0, column=6, padx=20, sticky="e")
+
+        # ============ Exit ============
+        self.bind("<Escape>", lambda q: self.destroy())
+        
+    def button_event(self):
+        print("button pressed")
+
+    def cancel(self):
+        self.destroy()
+
+    def total_price(self):
+        return self.lst_rec[8]+self.size_price+self.topping_price
+
+    def price_update(self):
+        self.var_price.set(f'price {self.total_price()} THB')
+
+    def increase(self):
+        self.data_itemcount += 1
+        self.lst_rec[8] = (int(pd[2])-int(pd[3]))*self.data_itemcount
+        self.lst_rec[4] = self.data_itemcount
+        self.var_itemcount.set(f'{self.data_itemcount}')
+        self.price_update()
+        # print(self.data_itemcount, self.lst_rec[8], self.lst_rec[4])
+
+    def decrease(self):
+        if self.data_itemcount > 1:
+            self.data_itemcount -= 1
+            self.lst_rec[8] = (int(pd[2])-int(pd[3]))*self.data_itemcount
+            self.lst_rec[4] = self.data_itemcount
+            self.var_itemcount.set(f'{self.data_itemcount}')
+            self.price_update()
+
+    def size_callback(self, choice):
+        self.lst_rec[5] = choice
+        if choice == "L": # L size +15 THB
+            self.size_price = 15
+        else: self.size_price = 0
+        self.price_update()
+
+    def topping_callback(self, choice):
+        self.lst_rec[6] = choice
+        if choice != "None":  # L topping +10 THB
+            self.topping_price = 10
+        else: self.topping_price = 0
+        self.price_update()
+
+    def swlv_callback(self, choice):
+        self.lst_rec[7] = choice
+
+    def optionmenu_callback(self, choice):
+        print("optionmenu dropdown clicked:", choice)
+
+    def save(self):
+        self.lst_rec[8] = self.total_price()
+        write_data_cart(self.lst_rec)
+        self.master.update_cart_button()
+        self.cancel()
 
 
 class MainWindow(customtkinter.CTk):
@@ -28,7 +226,7 @@ class MainWindow(customtkinter.CTk):
         self.title("POS Software")
         self.geometry(f"{MainWindow.WIDTH}x{MainWindow.HEIGHT}")
         self.resizable(False, False)
-
+        self.refresh()
         # ============ menu ============
         self.button_stock = customtkinter.CTkButton(master=self,
                                  width=60,
@@ -110,13 +308,13 @@ class MainWindow(customtkinter.CTk):
                 self.items_count += 1
             if i == self.product_row-2:
                 self.product_col -= (self.product_col*self.product_row)-self.all_product
-            # print((self.product_button_height*(i))+(i*20))
-        self.product_canvas_height = ((self.product_button_height*(self.product_row-5))+((self.product_row-5)*20))+self.product_frame.winfo_width()+10
+        
+        self.update_idletasks()
+        
         if self.product_row > 5:
-            self.product_canvas.config(scrollregion=(0,0,0,self.product_canvas_height))
+            self.product_canvas.config(scrollregion=(0,0,0,self.product_frame_buttons.winfo_height()+5))
         else:
             self.product_canvas.config(scrollregion=(0,0,0,self.product_frame.winfo_width()+10))
-        
         # ============ Cart ============
 
         # main frame
@@ -126,7 +324,7 @@ class MainWindow(customtkinter.CTk):
 
         # Label & var
         self.all_items = len(data_cart)
-        # self.discount = self.total_discount()
+        
         self.total_price = 0
         self.total_dis = 0
 
@@ -163,7 +361,7 @@ class MainWindow(customtkinter.CTk):
                                  width=150,
                                  height=60,
                                  text="Clear",
-                                 command=self.button_event,
+                                 command=self.clear_button,
                                  corner_radius=15,
                                  fg_color="#a82222",
                                  hover_color="#7f1a1a",
@@ -211,13 +409,14 @@ class MainWindow(customtkinter.CTk):
 
         # cart button
         self.cart_button_width = 30
+        self.cart_button_count = 0
         for i in range(self.all_items):
             # label
             self.label_product = customtkinter.CTkLabel(master=self.frame_buttons,
                                               text=data_cart[i][1],
                                               text_font=("Roboto Medium", -16),
                                               anchor="w")
-            self.label_product.pack()
+            self.label_product.pack(fill=tk.BOTH, padx=10)
 
             self.label_size = customtkinter.CTkLabel(master=self.frame_buttons,
                                               text=f"size: {data_cart[i][5]}",
@@ -250,7 +449,7 @@ class MainWindow(customtkinter.CTk):
                                  width=self.cart_button_width,
                                  height=self.cart_button_width,
                                  text=f"Remove",
-                                 command=self.button_event,
+                                 command=lambda button_count=self.cart_button_count : self.remove_button(button_count),
                                  corner_radius=10,
                                  fg_color="#a82222",
                                  hover_color="#7f1a1a",
@@ -258,16 +457,17 @@ class MainWindow(customtkinter.CTk):
             # self.b.grid(row=i+1, column=0, pady=5, padx=10, sticky="sw")
             self.b.pack(pady=5, padx=10, anchor="w")
 
-        self.cart_canvas_height = abs((self.cart_button_width*self.all_items)-440)+self.cart_sub_frame.winfo_width()
+            self.cart_button_count += 1
         
         self.update_idletasks() 
+        
         if self.frame_buttons.winfo_height()+5 < self.cart_sub_frame.winfo_width(): # +pady
             self.cart_canvas.config(scrollregion=(0,0,0,365)) # 2 items
         else:
             self.cart_canvas.config(scrollregion=(0,0,0,self.frame_buttons.winfo_height()))
         
         # ============ Update ============
-        self.update_all()
+        self.update_label() # update label
         
         # ============ Exit ============
         self.bind("<Escape>", self.confirmExit)
@@ -278,11 +478,19 @@ class MainWindow(customtkinter.CTk):
     def cart_update(self, b_index):
         data = data_pd[b_index]
         # print(data)
-        topping(data)
+        topping(data) # set data to global
+        Topping(self) # run Topping class
+        print(self.winfo_children())
         # print(data_cart)
 
     def button_event(self):
         print("button pressed")
+
+    def clear_button(self):
+        for widget in self.frame_buttons.winfo_children(): # clear button list
+            widget.destroy()
+        clear_data_cart() # clear csv
+        self.update_cart_button()
 
     def open_stockManagement(self):
         stockManagement()
@@ -304,10 +512,88 @@ class MainWindow(customtkinter.CTk):
         self.total_dis = self.cal
         self.var_dis.set(f'{self.total_dis} THB')
 
-    def update_all(self):
+    def update_label(self):
         self.cal_total_discount()
         self.cal_total_price()
+        self.all_items = len(data_cart)
+        self.var_allcart.set(value=f"Total {self.all_items} items")
 
+    def remove_button(self, index):
+        # # delete 6 children
+        # self.cart_button_count -= 1
+        # self.item_index = index*(index+1)
+        # for i in range(6):
+        #     self.frame_buttons.winfo_children()[self.item_index].destroy()
+        # print('button :',index)
+        pass
+
+
+    def update_cart_button(self):
+        self.refresh() # get csv again
+        self.update_label() # update price label
+        # print(self.frame_buttons.winfo_children())
+        for widget in self.frame_buttons.winfo_children(): # clear button list
+            widget.destroy()
+        self.cart_button_count = 0
+        for i in range(self.all_items):
+            # label
+            self.label_product = customtkinter.CTkLabel(master=self.frame_buttons,
+                                              text=data_cart[i][1],
+                                              text_font=("Roboto Medium", -16),
+                                              anchor="w")
+            self.label_product.pack(fill=tk.BOTH, padx=10)
+
+            self.label_size = customtkinter.CTkLabel(master=self.frame_buttons,
+                                              text=f"size: {data_cart[i][5]}",
+                                              text_font=("Roboto Medium", -12),
+                                              text_color="gray",
+                                              anchor="w")
+            self.label_size.pack()
+            
+            self.label_topping = customtkinter.CTkLabel(master=self.frame_buttons,
+                                              text=f"Topping: {data_cart[i][6]}",
+                                              text_font=("Roboto Medium", -12),
+                                              text_color="gray",
+                                              anchor="w")
+            self.label_topping.pack()
+
+            self.label_topping = customtkinter.CTkLabel(master=self.frame_buttons,
+                                              text=f"Sweetness Level: {data_cart[i][7]}",
+                                              text_font=("Roboto Medium", -12),
+                                              text_color="gray",
+                                              anchor="w")
+            self.label_topping.pack()
+
+            self.label_swlv = customtkinter.CTkLabel(master=self.frame_buttons,
+                                              text=f"{data_cart[i][8]} THB",
+                                              text_font=("Roboto Medium", -16),
+                                              anchor="w")
+            self.label_swlv.pack()
+
+            self.b = customtkinter.CTkButton(self.frame_buttons,
+                                 width=self.cart_button_width,
+                                 height=self.cart_button_width,
+                                 text=f"Remove",
+                                 command=lambda button_count=self.cart_button_count : self.remove_button(button_count),
+                                 corner_radius=10,
+                                 fg_color="#a82222",
+                                 hover_color="#7f1a1a",
+                                 text_font=("Roboto Regular", -12))
+            # self.b.grid(row=i+1, column=0, pady=5, padx=10, sticky="sw")
+            self.b.pack(pady=5, padx=10, anchor="w")
+
+            self.cart_button_count += 1
+        
+        self.update_idletasks() 
+        
+        if self.frame_buttons.winfo_height()+5 < self.cart_sub_frame.winfo_width(): # +pady
+            self.cart_canvas.config(scrollregion=(0,0,0,365)) # 2 items
+        else:
+            self.cart_canvas.config(scrollregion=(0,0,0,self.frame_buttons.winfo_height()))
+
+    def refresh(self):
+        getCSV()
+        
     def confirmExit(self, event=0):
         if messagebox.askokcancel('Quit', 'Are you sure you want to exit?', icon = 'warning'):
             self.quit()

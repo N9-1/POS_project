@@ -525,7 +525,6 @@ class MainWindow(customtkinter.CTk):
         # for i in range(6):
         #     self.frame_buttons.winfo_children()[self.item_index].destroy()
         # print('button :',index)
-        print(index)
         remove_row(index)
         self.update_cart_button()
 

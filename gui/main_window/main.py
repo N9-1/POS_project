@@ -20,7 +20,6 @@ def getCSV():
     # ============ get csv ============
     data_pd = get_data_pd()
     data_cart = get_data_cart()
-    print(data_cart)
 
 
 class Topping(customtkinter.CTkToplevel):
@@ -45,7 +44,7 @@ class Topping(customtkinter.CTkToplevel):
         self.lst_rec.extend(pd) # add 0-3
         self.lst_sample = [None] * 5 # add None range
         self.lst_rec.extend(self.lst_sample)
-        # print(self.lst_rec)
+
         # ============ label ============
         self.label_tps = customtkinter.CTkLabel(master=self,
                                               text="Select Topping",
@@ -112,7 +111,7 @@ class Topping(customtkinter.CTkToplevel):
 
         self.data_itemcount = 1
         self.lst_rec[4] = self.data_itemcount
-        # print(self.lst_rec)
+
         self.var_itemcount = tk.StringVar(value=f'{self.data_itemcount}')
         # .set()
         self.label_itemcount = customtkinter.CTkLabel(master=self.low_frame,
@@ -158,9 +157,6 @@ class Topping(customtkinter.CTkToplevel):
         # ============ Exit ============
         self.bind("<Escape>", lambda q: self.destroy())
         
-    def button_event(self):
-        print("button pressed")
-
     def cancel(self):
         self.destroy()
 
@@ -176,7 +172,6 @@ class Topping(customtkinter.CTkToplevel):
         self.lst_rec[4] = self.data_itemcount
         self.var_itemcount.set(f'{self.data_itemcount}')
         self.price_update()
-        # print(self.data_itemcount, self.lst_rec[8], self.lst_rec[4])
 
     def decrease(self):
         if self.data_itemcount > 1:
@@ -202,9 +197,6 @@ class Topping(customtkinter.CTkToplevel):
 
     def swlv_callback(self, choice):
         self.lst_rec[7] = choice
-
-    def optionmenu_callback(self, choice):
-        print("optionmenu dropdown clicked:", choice)
 
     def save(self):
         self.lst_rec[8] = self.total_price()
@@ -300,7 +292,6 @@ class Payment(customtkinter.CTkToplevel):
                  messagebox.showwarning("warning", "The paid amount must exceed the total price.")
                  return
         except:
-            print(self.paid_entry.get())
             messagebox.showerror("error", "Only digits allowed.")
             return
 
@@ -766,9 +757,6 @@ class MainWindow(customtkinter.CTk):
         topping(data) # set data to global
         Topping(self) # run Topping class
 
-    def button_event(self):
-        print("button pressed")
-
     def clear_button(self):
         for widget in self.frame_buttons.winfo_children(): # clear button list
             widget.destroy()
@@ -776,7 +764,10 @@ class MainWindow(customtkinter.CTk):
         self.update_cart_button()
 
     def pay_button(self):
-        Payment(self)
+        if data_cart:
+            Payment(self)
+        else:
+            messagebox.showwarning("warning", "Cart is empty.")
 
     def open_stockManagement(self):
         StockManagement()
@@ -857,7 +848,7 @@ class MainWindow(customtkinter.CTk):
     def update_cart_button(self):
         self.refresh() # get csv again
         self.update_label() # update price label
-        # print(self.frame_buttons.winfo_children())
+
         for widget in self.frame_buttons.winfo_children(): # clear button list
             widget.destroy()
         self.cart_button_count = 0

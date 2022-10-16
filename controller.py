@@ -1,8 +1,5 @@
 import csv
 import os
-from tkinter import messagebox
-
-# ============ csv ============
 
 # ============ product ============
 

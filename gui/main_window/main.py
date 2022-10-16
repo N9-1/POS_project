@@ -301,11 +301,11 @@ class Payment(customtkinter.CTkToplevel):
         paid_amount = float(self.paid_entry.get())
         # clear_data_cart()
         # self.master.update_cart_button()
-        self.master.open_bill()
+        self.master.open_Receipt()
         self.destroy()
 
 
-class Bill(customtkinter.CTkToplevel):
+class Receipt(customtkinter.CTkToplevel):
 
     WIDTH = 600
     HEIGHT = 720
@@ -314,19 +314,19 @@ class Bill(customtkinter.CTkToplevel):
         super().__init__(master, *args, **kwargs)
         self.master = master
 
-        self.title("Bill")
-        self.geometry(f"{Bill.WIDTH}x{Bill.HEIGHT}")
+        self.title("Receipt")
+        self.geometry(f"{Receipt.WIDTH}x{Receipt.HEIGHT}")
         self.grid_propagate(False)
 
         # ============ make resizable = Fasle ============
-        self.minsize(Bill.WIDTH, Bill.HEIGHT)
-        self.maxsize(Bill.WIDTH, Bill.HEIGHT)
+        self.minsize(Receipt.WIDTH, Receipt.HEIGHT)
+        self.maxsize(Receipt.WIDTH, Receipt.HEIGHT)
 
         self.attributes('-topmost', 'true') # always on top
         self.grab_set() # ensure that users can only interact with dialog
 
         # ============ main frame ============
-        self.main_frame = customtkinter.CTkFrame(master=self, width=Bill.WIDTH-50, height=Bill.HEIGHT-50, corner_radius=10)
+        self.main_frame = customtkinter.CTkFrame(master=self, width=Receipt.WIDTH-50, height=Receipt.HEIGHT-50, corner_radius=10)
         self.main_frame.grid(column=0, row=0, pady=20, padx=20)
         self.main_frame.grid_propagate(False)
 
@@ -775,8 +775,8 @@ class MainWindow(customtkinter.CTk):
     def open_history(self):
         open_sales_history()
 
-    def open_bill(self):
-        Bill(self)
+    def open_Receipt(self):
+        Receipt(self)
 
     def cal_total_price(self):
         self.cal = 0

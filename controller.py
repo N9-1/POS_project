@@ -85,4 +85,17 @@ def write_sales_history(lst):
         writer.writerows(lst)
 
 def open_sales_history():
-    os.startfile('.\data_file\sales_history.csv')
+    try:
+        filepath = '.\data_file\sales_history.csv'
+        file_open = open(filepath)
+    except FileNotFoundError:
+        directory = 'data_file'
+
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+            
+        header = [['time','Product_ID','Product_Name','Qty.','Size','Topping','SweetnessLv','Total']]
+        with open('.\data_file\sales_history.csv', 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=',')
+            writer.writerows(header)
+    os.startfile(filepath)

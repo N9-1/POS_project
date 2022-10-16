@@ -20,6 +20,7 @@ def getCSV():
     # ============ get csv ============
     data_pd = get_data_pd()
     data_cart = get_data_cart()
+    print(data_cart)
 
 
 class Topping(customtkinter.CTkToplevel):

@@ -22,7 +22,7 @@ def get_data_pd():
         with open('.\data_file\DB_Milk-Tea.csv', 'w', newline='') as file:
             writer = csv.writer(file, delimiter=',')
             writer.writerows(header)
-        data_pd = []
+        data_pd = [] # return empty list
         return data_pd
 
 # ============ cart ============
@@ -44,7 +44,7 @@ def get_data_cart():
         with open('.\data_file\cart_record.csv', 'w', newline='') as file:
             writer = csv.writer(file, delimiter=',')
             writer.writerows(header)
-        data_cart = []
+        data_cart = [] # return empty list
         return data_cart
 
 def write_data_cart(*argv):
@@ -63,3 +63,13 @@ def clear_data_cart():
         writer = csv.writer(file)
         writer.writerow(data_cart[0])
     
+def remove_row(n):
+    filepath_cart = '.\data_file\cart_record.csv'
+    file_cart = open(filepath_cart)
+    reader_cart = csv.reader(file_cart)
+    data_cart = list(reader_cart)
+    index = n
+    del data_cart[index+1]
+    with open('.\data_file\cart_record.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(data_cart)

@@ -5,7 +5,7 @@ import customtkinter
 from .stock_management.main import stockManagement
 from .history.main import history
 # from .topping.main import topping
-from controller import get_data_pd, get_data_cart, write_data_cart, clear_data_cart
+from controller import *
 
 
 def mainWindow():
@@ -525,8 +525,9 @@ class MainWindow(customtkinter.CTk):
         # for i in range(6):
         #     self.frame_buttons.winfo_children()[self.item_index].destroy()
         # print('button :',index)
-        pass
-
+        print(index)
+        remove_row(index)
+        self.update_cart_button()
 
     def update_cart_button(self):
         self.refresh() # get csv again

@@ -499,8 +499,6 @@ class StockManagement(customtkinter.CTkToplevel):
         self.master.update_product_button()
         self.destroy()
 
-        
-
 
 class MainWindow(customtkinter.CTk):
 

@@ -4,6 +4,11 @@ from tkinter import messagebox
 
 # ============ csv ============
 
+# ============ product ============
+
+def open_pd():
+    os.startfile('.\data_file\DB_Milk-Tea.csv')
+
 def get_data_pd():
     try:
         filepath_pd = '.\data_file\DB_Milk-Tea.csv'
@@ -48,7 +53,6 @@ def get_data_cart():
         return data_cart
 
 def write_data_cart(*argv):
-    # print(*argv)
     with open('.\data_file\cart_record.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(*argv)
@@ -73,3 +77,12 @@ def remove_row(n):
     with open('.\data_file\cart_record.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerows(data_cart)
+
+# ============ history ============
+def write_sales_history(lst):
+    with open('.\data_file\sales_history.csv', 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(lst)
+
+def open_sales_history():
+    os.startfile('.\data_file\sales_history.csv')

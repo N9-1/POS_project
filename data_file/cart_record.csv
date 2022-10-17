@@ -1,1 +1,9 @@
 ID,Product_Name,Price,Discount,Item,Size,Topping,SweetnessLv,Total_Price
+2,Taiwan Green Milk Tea,30,10,1,M,None,100%,20.0
+6,Strawberry Tea,30,0,1,M,Grass jelly,50%,40.0
+5,Tea,25,0,1,L,Grass jelly,75%,50.0
+3,Strawberry Milk Tea,30,0,1,M,Grass jelly,75%,40.0
+7,Lemon Tea,30,0,1,M,None,100%,30.0
+18,Brown Sugar Milk,45,0,1,M,None,100%,45.0
+19,Cocoa,45,0,1,M,None,100%,45.0
+17,Matcha Latte,50,0,3,L,Grass jelly,50%,175.0
